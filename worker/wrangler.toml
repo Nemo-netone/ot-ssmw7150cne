@@ -1,0 +1,8 @@
+name = "ot-ssmw7150cne-api"
+main = "src/index.js"
+compatibility_date = "2026-07-10"
+
+[vars]
+SUPABASE_SCHEMA = "ot_ssmw7150cne"
+CORS_ALLOWED_ORIGINS = "https://ot-ssmw7150cne.pages.dev"
+

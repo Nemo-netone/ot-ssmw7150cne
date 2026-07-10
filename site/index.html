@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>活动报名管理系统</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="publicView" class="page-shell">
+      <header class="topbar">
+        <div>
+          <strong>活动报名管理系统</strong>
+          <span>活动发布、报名审核、通知与跟踪管理</span>
+        </div>
+        <nav>
+          <a href="#activity">活动</a>
+          <a href="#workflow">流程</a>
+          <a href="#login">登录</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Activity Registration Demo</p>
+            <h1>面向校园与社区的活动报名管理平台</h1>
+            <p>
+              演示版覆盖活动信息、报名审核、活动跟踪、通知信息、公告资讯和后台数据维护。
+              线上使用 Cloudflare Workers API 与 Supabase 独立 schema，适合作品集访问和功能展示。
+            </p>
+            <div class="hero-actions">
+              <button type="button" class="primary" data-login="admin/admin/admin">管理员演示</button>
+              <button type="button" data-login="manager/管理账号1/123456">活动管理员</button>
+              <button type="button" data-login="user/用户账号1/123456">用户演示</button>
+            </div>
+          </div>
+          <div class="hero-board" aria-label="活动数据概览">
+            <div class="market-card featured">
+              <span>精选活动</span>
+              <strong>校园志愿服务</strong>
+              <small>名额 40 · 状态 报名中</small>
+            </div>
+            <div class="mini-grid">
+              <div><strong>4</strong><span>活动</span></div>
+              <div><strong>4</strong><span>报名</span></div>
+              <div><strong>3</strong><span>通知</span></div>
+              <div><strong>3</strong><span>用户</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="activity" class="band">
+          <div class="section-title">
+            <p class="eyebrow">Activity Modules</p>
+            <h2>活动运营的核心业务闭环</h2>
+          </div>
+          <div class="feature-grid">
+            <article>
+              <h3>活动发布</h3>
+              <p>维护活动分类、活动名称、地点、时间、报名要求和活动描述。</p>
+            </article>
+            <article>
+              <h3>报名审核</h3>
+              <p>查看报名用户、报名时间、审核状态和审核回复。</p>
+            </article>
+            <article>
+              <h3>活动跟踪</h3>
+              <p>记录活动执行状态，用于后续复盘和过程管理。</p>
+            </article>
+            <article>
+              <h3>通知触达</h3>
+              <p>维护面向用户的通知信息、封面、发布时间和通知正文。</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="workflow" class="process-band">
+          <div>
+            <p class="eyebrow">Workflow</p>
+            <h2>从发布到跟踪</h2>
+          </div>
+          <ol>
+            <li>活动管理员发布活动信息</li>
+            <li>用户提交报名记录</li>
+            <li>后台审核报名并发送通知</li>
+            <li>活动结束后更新跟踪状态</li>
+          </ol>
+        </section>
+
+        <section id="login" class="login-panel">
+          <div>
+            <p class="eyebrow">Demo Login</p>
+            <h2>进入演示后台</h2>
+            <p>登录后可查看仪表盘、活动、报名、跟踪、通知、资讯等模块，并可进行演示数据的新增、修改和删除。</p>
+          </div>
+          <form id="loginForm" class="login-form">
+            <label>
+              角色
+              <select id="role">
+                <option value="admin">管理员</option>
+                <option value="manager">活动管理员</option>
+                <option value="user">普通用户</option>
+              </select>
+            </label>
+            <label>
+              账号
+              <input id="username" value="admin" autocomplete="username" />
+            </label>
+            <label>
+              密码
+              <input id="password" value="admin" type="password" autocomplete="current-password" />
+            </label>
+            <button class="primary" type="submit">登录</button>
+            <p id="loginMessage" class="message"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div id="appView" class="app-shell" hidden>
+      <aside>
+        <div class="brand">
+          <strong>活动管理</strong>
+          <span id="roleText">Demo</span>
+        </div>
+        <nav id="moduleNav"></nav>
+      </aside>
+
+      <section class="workspace">
+        <header class="workspace-head">
+          <div>
+            <p class="eyebrow">Management Console</p>
+            <h1 id="pageTitle">仪表盘</h1>
+          </div>
+          <div class="toolbar">
+            <input id="searchInput" placeholder="搜索当前模块" />
+            <button id="refreshButton" type="button">刷新</button>
+            <button id="addButton" type="button">新增</button>
+            <button id="logoutButton" type="button">退出</button>
+          </div>
+        </header>
+
+        <main id="dashboard" class="dashboard"></main>
+
+        <main id="modulePanel" class="module-panel" hidden>
+          <div class="module-title">
+            <div>
+              <h2 id="moduleTitle">模块</h2>
+              <p id="moduleSummary"></p>
+            </div>
+            <span id="recordCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead id="tableHead"></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </main>
+      </section>
+    </div>
+
+    <dialog id="editDialog">
+      <form id="editForm" method="dialog">
+        <header>
+          <h2 id="dialogTitle">编辑</h2>
+          <button id="closeDialogButton" type="button" aria-label="关闭">x</button>
+        </header>
+        <div id="formFields" class="form-grid"></div>
+        <footer>
+          <button id="cancelEditButton" type="button">取消</button>
+          <button class="primary" type="submit">保存</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
+
